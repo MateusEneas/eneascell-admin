@@ -40,7 +40,7 @@ export class Login {
     .subscribe({
       next: (token) => {
         localStorage.setItem('token', token);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/produtos']);
       },
       error: () => {
         console.log('Email ou senha inválidos');

@@ -3,12 +3,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #1a3a6b 0%, #2962CC 50%, #4C9AFF 100%);
 }
 
 .login-card {
   width: 100%;
   max-width: 400px;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
 }
 
 .login-form {
@@ -24,13 +26,16 @@ mat-form-field {
 
 h2 {
   margin: 0 0 4px 0;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2962CC;
+  letter-spacing: 1px;
 }
 
 p {
   margin: 0 0 16px 0;
   color: #666;
-  font-size: 14px;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
