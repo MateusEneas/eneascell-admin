@@ -1,10 +1,10 @@
+import { ProdutoService } from './../../core/services/produto';
 import { CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-import { ProdutoService } from '../../core/services/produto';
 import { Produto } from '../../core/models/produto.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ProdutoDialog } from '../../shared/components/produto-dialog/produto-dialog';
@@ -69,6 +69,39 @@ export class Produtos implements OnInit{
         });
       }
     });
+  }
+
+  abrirDialogEditar(produto: Produto) {
+    const dialogRef = this.dialog.open(ProdutoDialog, {
+      width: '500px',
+      data: produto
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        this.produtoService.atualizar(produto.id, resultado).subscribe({
+          next: () => {
+            this.carregarProdutos();
+          },
+          error: (err) => {
+            console.log('Erro ao atualizar produto:', err);
+          }
+        });
+      }
+    });
+  }
+
+  deletar(id: string) {
+    if (confirm('Tem certeza que deseja excluir este produto?')) {
+      this.produtoService.deletar(id).subscribe({
+        next: () => {
+          this.carregarProdutos();
+        },
+        error: (err) => {
+          console.log('Erro ao deletar produto:', err);
+        }
+      });
+    }
   }
 
 }

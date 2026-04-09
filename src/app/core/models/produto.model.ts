@@ -4,7 +4,7 @@ export interface Produto {
   descricao: string;
   preco: number;
   quantidade: number;
-  categories: Categoria[];
+  category: Categoria[];
 }
 
 export interface Categoria {

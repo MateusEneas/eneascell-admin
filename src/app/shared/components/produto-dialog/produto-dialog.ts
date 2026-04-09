@@ -2,11 +2,11 @@ import { CategoriaService } from './../../../core/services/categoria';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Categoria } from '../../../core/models/produto.model';
+import { Categoria, Produto } from '../../../core/models/produto.model';
 
 @Component({
   selector: 'app-produto-dialog',
@@ -24,7 +24,9 @@ import { Categoria } from '../../../core/models/produto.model';
 export class ProdutoDialog implements OnInit{
 
   private dialogRef = inject(MatDialogRef<ProdutoDialog>);
-  private CategoriaService = inject(CategoriaService);
+  private categoriaService = inject(CategoriaService);
+
+  readonly data = inject<Produto | null>(MAT_DIALOG_DATA);
 
   categorias = signal<Categoria[]>([]);
 
@@ -37,11 +39,27 @@ export class ProdutoDialog implements OnInit{
   });
 
   ngOnInit() {
-    this.CategoriaService.listar().subscribe({
-      next: (dados) => {
-        this.categorias.set(dados);
+  this.categoriaService.listar().subscribe({
+    next: (dados) => {
+      this.categorias.set(dados);
+      console.log('data recebido:', this.data);
+
+      if (this.data) {
+        this.form.patchValue({
+          nome: this.data.nome,
+          descricao: this.data.descricao,
+          preco: this.data.preco,
+          quantidade: this.data.quantidade,
+          categoryIds: this.data.category.map(c => c.id)
+        });
+        console.log('form após patchValue:', this.form.value);
       }
-    });
+    }
+  });
+}
+
+  get titulo() {
+    return this.data ? 'Editar Produto' : 'Novo Produto';
   }
 
   salvar() {
