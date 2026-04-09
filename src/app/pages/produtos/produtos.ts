@@ -1,9 +1,52 @@
-import { Component } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { ProdutoService } from '../../core/services/produto';
+import { Produto } from '../../core/models/produto.model';
 
 @Component({
   selector: 'app-produtos',
-  imports: [],
+  imports: [
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    CurrencyPipe
+  ],
   templateUrl: './produtos.html',
   styleUrl: './produtos.scss',
 })
-export class Produtos {}
+export class Produtos implements OnInit{
+
+  private produtoService = inject(ProdutoService);
+
+  produtos = signal<Produto[]>([]);
+  carregando = signal(true);
+  erro = signal('');
+
+  colunas = ['nome', 'preco', 'quantidade', 'acoes'];
+
+  ngOnInit() {
+    this.carregarProdutos();
+  }
+
+  carregarProdutos() {
+    this.carregando.set(true);
+
+    this.produtoService.listar().subscribe({
+      next: (dados) => {
+        this.produtos.set(dados);
+        this.carregando.set(false);
+      },
+      error: (err) => {
+        console.log('Erro completo:', err);
+        this.erro.set('ro ao carregar produtos');
+        this.carregando.set(false);
+      }
+    });
+  }
+
+}
