@@ -6,6 +6,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { ProdutoService } from '../../core/services/produto';
 import { Produto } from '../../core/models/produto.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ProdutoDialog } from '../../shared/components/produto-dialog/produto-dialog';
 
 @Component({
   selector: 'app-produtos',
@@ -22,6 +24,7 @@ import { Produto } from '../../core/models/produto.model';
 export class Produtos implements OnInit{
 
   private produtoService = inject(ProdutoService);
+  private dialog = inject(MatDialog);
 
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
@@ -45,6 +48,25 @@ export class Produtos implements OnInit{
         console.log('Erro completo:', err);
         this.erro.set('ro ao carregar produtos');
         this.carregando.set(false);
+      }
+    });
+  }
+
+  abrirDialogNovo() {
+    const dialogRef = this.dialog.open(ProdutoDialog, {
+      width: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        this.produtoService.criar(resultado).subscribe({
+          next: () => {
+            this.carregarProdutos();
+          },
+          error: (err) => {
+            console.log('Erro ao criar produto:', err);
+          }
+        });
       }
     });
   }

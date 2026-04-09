@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Novo Produto</h2>
+
+<mat-dialog-content>
+
+  <form class="dialog-form" [formGroup]="form">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="nome" placeholder="Ex: Capinha iPhone 14" />
+      <mat-error>Nome é obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descrição</mat-label>
+      <textarea matInput formControlName="descricao" rows="3"
+        placeholder="Descreva o produto..."></textarea>
+      <mat-error>Descrição é obrigatória</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Preço</mat-label>
+        <span matTextPrefix>R$&nbsp;</span>
+        <input matInput type="number" formControlName="preco" placeholder="0,00" />
+        <mat-error>Preço inválido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Quantidade</mat-label>
+        <input matInput type="number" formControlName="quantidade" placeholder="0" />
+        <mat-error>Quantidade inválida</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <mat-form-field appearance="outline">
+  <mat-label>Categorias</mat-label>
+  <mat-select formControlName="categoryIds" multiple>
+    @for (categoria of categorias(); track categoria.id) {
+      <mat-option [value]="categoria.id">
+        {{ categoria.nome }}
+      </mat-option>
+    }
+  </mat-select>
+  <mat-error>Selecione pelo menos uma categoria</mat-error>
+</mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+</mat-dialog-actions>
