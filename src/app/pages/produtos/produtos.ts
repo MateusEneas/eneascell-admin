@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { Produto } from '../../core/models/produto.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ProdutoDialog } from '../../shared/components/produto-dialog/produto-dialog';
+import { NotificacaoService } from '../../core/services/notificacao';
 
 @Component({
   selector: 'app-produtos',
@@ -25,6 +26,7 @@ export class Produtos implements OnInit{
 
   private produtoService = inject(ProdutoService);
   private dialog = inject(MatDialog);
+  private notificacaoService = inject(NotificacaoService);
 
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
@@ -62,9 +64,10 @@ export class Produtos implements OnInit{
         this.produtoService.criar(resultado).subscribe({
           next: () => {
             this.carregarProdutos();
+            this.notificacaoService.sucesso('Produto criado com sucesso!');
           },
           error: (err) => {
-            console.log('Erro ao criar produto:', err);
+            this.notificacaoService.erro('Erro ao criar produto!');
           }
         });
       }
@@ -82,9 +85,10 @@ export class Produtos implements OnInit{
         this.produtoService.atualizar(produto.id, resultado).subscribe({
           next: () => {
             this.carregarProdutos();
+            this.notificacaoService.sucesso('Produto atualizado com sucesso!');
           },
           error: (err) => {
-            console.log('Erro ao atualizar produto:', err);
+            this.notificacaoService.erro('Erro ao atualizar produto!');
           }
         });
       }
@@ -96,6 +100,7 @@ export class Produtos implements OnInit{
       this.produtoService.deletar(id).subscribe({
         next: () => {
           this.carregarProdutos();
+          this.notificacaoService.sucesso('Produto excluído com sucesso!');
         },
         error: (err) => {
           console.log('Erro ao deletar produto:', err);

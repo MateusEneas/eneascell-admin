@@ -9,6 +9,7 @@ import { UsuarioService } from '../../core/services/usuario';
 import { Usuario } from '../../core/models/usuario.model';
 import { UsuarioDialog } from '../../shared/components/usuario-dialog/usuario-dialog';
 import { ProdutoDialog } from '../../shared/components/produto-dialog/produto-dialog';
+import { NotificacaoService } from '../../core/services/notificacao';
 
 @Component({
   selector: 'app-usuarios',
@@ -27,6 +28,7 @@ export class Usuarios {
 
   private usuarioService = inject(UsuarioService);
   private dialog = inject(MatDialog);
+  private notificacaoService = inject(NotificacaoService);
 
   usuarios = signal<Usuario[]>([]);
   carregando = signal(true);
@@ -64,9 +66,10 @@ export class Usuarios {
         this.usuarioService.criar(resultado).subscribe({
           next: () => {
             this.carregarUsuarios();
+            this.notificacaoService.sucesso('Usuário criado com sucesso!');
           },
           error: (err) => {
-            console.log('Erro ao criar usuário:', err);
+            this.notificacaoService.erro('Erro ao criar usuário!');
           }
         });
       }
@@ -84,9 +87,10 @@ export class Usuarios {
         this.usuarioService.atualizar(usuario.id, resultado).subscribe({
           next: () => {
             this.carregarUsuarios();
+            this.notificacaoService.sucesso('Usuário atualizado com sucesso!');
           },
           error: (err) => {
-            console.log('Erro ao atualizar usuário', err);
+            this.notificacaoService.erro('Erro ao atualizar usuário!');
           }
         });
       }
