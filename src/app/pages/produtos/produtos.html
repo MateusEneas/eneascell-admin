@@ -8,6 +8,22 @@
     </button>
   </div>
 
+  <div class="busca-container">
+  <mat-form-field appearance="outline" class="campo-busca">
+    <mat-label>Buscar produto</mat-label>
+    <input matInput [(ngModel)]="termoBusca" placeholder="Digite o nome do produto..." />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="buscar()">
+    Buscar
+  </button>
+
+  <button mat-button (click)="limparBusca()">
+    Limpar
+  </button>
+</div>
+
   @if (carregando()) {
     <div class="loading">
       <mat-spinner />

@@ -9,6 +9,9 @@ import { Produto } from '../../core/models/produto.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ProdutoDialog } from '../../shared/components/produto-dialog/produto-dialog';
 import { NotificacaoService } from '../../core/services/notificacao';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-produtos',
@@ -17,8 +20,11 @@ import { NotificacaoService } from '../../core/services/notificacao';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    CurrencyPipe
-  ],
+    CurrencyPipe,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
+],
   templateUrl: './produtos.html',
   styleUrl: './produtos.scss',
 })
@@ -31,6 +37,7 @@ export class Produtos implements OnInit{
   produtos = signal<Produto[]>([]);
   carregando = signal(true);
   erro = signal('');
+  termoBusca = '';
 
   colunas = ['nome', 'preco', 'quantidade', 'acoes'];
 
@@ -103,10 +110,34 @@ export class Produtos implements OnInit{
           this.notificacaoService.sucesso('Produto excluído com sucesso!');
         },
         error: (err) => {
-          console.log('Erro ao deletar produto:', err);
+          this.notificacaoService.erro('Erro ao deletar produto!');
         }
       });
     }
+  }
+
+  buscar() {
+    if (this.termoBusca) {
+      this.produtoService.filtrar(this.termoBusca).subscribe({
+        next: (dados) => {
+          this.produtos.set(dados.content);
+        }
+      })
+    } else {
+      this.produtoService.listar().subscribe({
+        next: (dados) => {
+          this.produtos.set(dados);
+        },
+        error: (err) => {
+          this.notificacaoService.erro('Erro ao listar produtos!');
+        }
+      })
+    }
+  }
+
+  limparBusca() {
+    this.termoBusca = '';
+    this.carregarProdutos();
   }
 
 }

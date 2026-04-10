@@ -38,3 +38,15 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+
+.busca-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .campo-busca {
+    flex: 1;
+    max-width: 400px;
+  }
+}
