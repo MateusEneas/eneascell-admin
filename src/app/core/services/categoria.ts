@@ -14,4 +14,20 @@ export class CategoriaService {
     return this.http.get<Categoria[]>(`${this.apiUrl}/categories/`);
   }
 
+  buscarPorId(id: string) {
+    return this.http.get<Categoria>(`${this.apiUrl}/categories/${id}`)
+  }
+
+  criar(categoria: Partial<Categoria>) {
+    return this.http.post<Categoria>(`${this.apiUrl}/categories/`, categoria);
+  }
+
+  atualizar(id: string, categoria: Partial<Categoria>) {
+      return this.http.patch<Categoria>(`${this.apiUrl}/categories/${id}`, categoria);
+    }
+
+    deletar(id: string) {
+      return this.http.delete<void>(`${this.apiUrl}/categories/${id}`);
+    }
+
 }

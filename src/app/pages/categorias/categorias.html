@@ -1,0 +1,50 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Categorias</h2>
+    <button mat-raised-button color="primary" (click)="abrirDialogNovo()">
+      <mat-icon>add</mat-icon>
+      Nova Categoria
+    </button>
+  </div>
+
+  @if (carregando()) {
+    <div class="loading">
+      <mat-spinner />
+    </div>
+  } @else if (erro()) {
+    <div class="erro">
+      <p>{{ erro()}}</p>
+      <button mat-button color="primary" (click)="carregarCategorias()">
+        Tentar Novamente
+      </button>
+    </div>
+  } @else {
+    <table mat-table [dataSource]="categorias()" class="tabela">
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let categoria">
+          {{categoria.nome}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let categoria">
+          <button mat-icon-button color="primary" (click)="abrirDialogEditar(categoria)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deletar(categoria.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+
+    </table>
+  }
+
+</div>

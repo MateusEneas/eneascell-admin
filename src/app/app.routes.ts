@@ -22,6 +22,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/usuarios/usuarios').then(m => m.Usuarios)
       },
       {
+        path: 'categorias',
+        loadComponent: () => import('./pages/categorias/categorias').then(m => m.Categorias)
+      },
+      {
         path: '',
         redirectTo: 'produtos',
         pathMatch: 'full'
