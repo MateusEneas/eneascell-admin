@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+
+<mat-dialog-content>
+
+  <form class="dialog-form" [formGroup]="form" autocomplete="off">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="nome" placeholder="Ex: Nome do usuario" />
+      <mat-error>Nome é obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Ex: seuemail@email.com" />
+      <mat-error>Email é obrigatório</mat-error>
+    </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="senha" placeholder="********" autocomplete="new-password" />
+        <mat-error>Senha inválida, minímo de 8 caracteres</mat-error>
+      </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Perfil</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="ADMIN">Administrador</mat-option>
+        <mat-option value="USER">Vendedor</mat-option>
+      </mat-select>
+      <mat-error>Perfil é obrigatório</mat-error>
+    </mat-form-field>
+
+  </form>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="salvar()">Salvar</button>
+</mat-dialog-actions>
