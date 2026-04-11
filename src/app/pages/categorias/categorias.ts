@@ -1,5 +1,4 @@
 import { CategoriaDialog } from './../../shared/components/categoria-dialog/categoria-dialog';
-import { CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { CategoriaService } from '../../core/services/categoria';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotificacaoService } from '../../core/services/notificacao';
 import { Categoria } from '../../core/models/produto.model';
 
@@ -20,10 +19,10 @@ import { Categoria } from '../../core/models/produto.model';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    CurrencyPipe,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ],
   templateUrl: './categorias.html',
   styleUrl: './categorias.scss',
@@ -53,7 +52,7 @@ export class Categorias implements OnInit{
         this.categorias.set(dados);
         this.carregando.set(false);
       },
-      error: (err) => {
+      error: () => {
         this.erro.set('Erro ao carregar categorias');
         this.carregando.set(false);
       }
