@@ -29,7 +29,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   padding: 0 24px;
   margin-bottom: 32px;
   flex-wrap: wrap;
@@ -41,9 +41,15 @@
   }
 
   .campo-categoria {
-    min-width: 200px;
+    min-width: 180px;
+  }
+
+  mat-form-field {
+    --mdc-outlined-text-field-container-height: 44px;
+    font-size: 14px;
   }
 }
+
 .loading {
   display: flex;
   justify-content: center;

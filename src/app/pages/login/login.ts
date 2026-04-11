@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../core/services/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthStateService } from '../../core/services/auth-state';
 
 @Component({
@@ -15,7 +15,9 @@ import { AuthStateService } from '../../core/services/auth-state';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

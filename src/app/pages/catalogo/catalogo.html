@@ -5,16 +5,18 @@
   </header>
 
   <div class="filtros">
-    <mat-form-field appearance="outline" class="campo-busca">
+    <mat-form-field appearance="outline" class="campo-busca" subscriptSizing="dynamic">
       <mat-label>Buscar produto</mat-label>
-      <input matInput [(ngModel)]="termoBusca" placeholder="Digite o nome do produto..." />
+      <input
+        matInput
+        [(ngModel)]="termoBusca"
+        placeholder="Nome do produto..."
+        (keyup.enter)="buscar()"
+      />
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="buscar()">Buscar</button>
-
-    <button mat-button (click)="limparBusca()">Limpar</button>
-
-    <mat-form-field appearance="outline" class="campo-categoria">
+    <mat-form-field appearance="outline" class="campo-categoria" subscriptSizing="dynamic">
       <mat-label>Categoria</mat-label>
       <mat-select [(ngModel)]="categoriaSelecionada" (ngModelChange)="filtrarPorCategoria()">
         <mat-option value="">Todas</mat-option>
@@ -25,6 +27,10 @@
         }
       </mat-select>
     </mat-form-field>
+
+    <button mat-stroked-button color="primary" (click)="buscar()">Buscar</button>
+
+    <button mat-button (click)="limparBusca()">Limpar</button>
   </div>
 
   @if (carregando()) {
@@ -47,7 +53,6 @@
             <mat-icon class="icone-produto">phone_android</mat-icon>
           </div>
           <mat-card-content>
-            
             <h3>{{ produto.nome }}</h3>
             <p class="descricao">{{ produto.descricao }}</p>
           </mat-card-content>

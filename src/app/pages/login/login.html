@@ -1,14 +1,10 @@
 <div class="login-container">
-
   <mat-card class="login-card">
-
     <mat-card-content>
-
       <h2>EneasCell</h2>
       <p>Painel Administrativo</p>
 
       <form class="login-form" [formGroup]="loginForm" (ngSubmit)="entrar()">
-
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput type="email" placeholder="seu@email.com" formControlName="email" />
@@ -21,11 +17,13 @@
           <mat-error>Senha obrigatória</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit"> Entrar</button>
+        <button mat-raised-button color="primary" type="submit">Entrar</button>
 
+        <div class="catalogo-link">
+          <span>Quer ver nossos produtos?</span>
+          <a routerLink="/catalogo">Acesse o catálogo</a>
+        </div>
       </form>
     </mat-card-content>
-
   </mat-card>
-
 </div>
