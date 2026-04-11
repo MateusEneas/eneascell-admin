@@ -41,4 +41,8 @@ export class ProdutoService {
 
   }
 
+  listarPorCategoria(categoriaId: string) {
+    return this.http.get<Produto[]>(`${this.apiUrl}/produto/category/${categoriaId}`);
+  }
+
 }

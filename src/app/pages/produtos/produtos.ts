@@ -5,13 +5,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-import { Produto } from '../../core/models/produto.model';
+import { Categoria, Produto } from '../../core/models/produto.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ProdutoDialog } from '../../shared/components/produto-dialog/produto-dialog';
 import { NotificacaoService } from '../../core/services/notificacao';
 import { FormsModule } from '@angular/forms';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { CategoriaService } from '../../core/services/categoria';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-produtos',
@@ -23,7 +25,8 @@ import { MatInputModule } from '@angular/material/input';
     CurrencyPipe,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
 ],
   templateUrl: './produtos.html',
   styleUrl: './produtos.scss',
@@ -31,6 +34,7 @@ import { MatInputModule } from '@angular/material/input';
 export class Produtos implements OnInit{
 
   private produtoService = inject(ProdutoService);
+  private categoriaService = inject(CategoriaService);
   private dialog = inject(MatDialog);
   private notificacaoService = inject(NotificacaoService);
 
@@ -38,11 +42,18 @@ export class Produtos implements OnInit{
   carregando = signal(true);
   erro = signal('');
   termoBusca = '';
+  categorias = signal<Categoria[]>([]);
+  categoriaSelecionada = '';
 
   colunas = ['nome', 'preco', 'quantidade', 'acoes'];
 
   ngOnInit() {
     this.carregarProdutos();
+    this.categoriaService.listar().subscribe({
+      next: (dados) => {
+        this.categorias.set(dados);
+      }
+    });
   }
 
   carregarProdutos() {
@@ -53,8 +64,7 @@ export class Produtos implements OnInit{
         this.produtos.set(dados);
         this.carregando.set(false);
       },
-      error: (err) => {
-        console.log('Erro completo:', err);
+      error: () => {
         this.erro.set('ro ao carregar produtos');
         this.carregando.set(false);
       }
@@ -73,7 +83,7 @@ export class Produtos implements OnInit{
             this.carregarProdutos();
             this.notificacaoService.sucesso('Produto criado com sucesso!');
           },
-          error: (err) => {
+          error: () => {
             this.notificacaoService.erro('Erro ao criar produto!');
           }
         });
@@ -94,7 +104,7 @@ export class Produtos implements OnInit{
             this.carregarProdutos();
             this.notificacaoService.sucesso('Produto atualizado com sucesso!');
           },
-          error: (err) => {
+          error: () => {
             this.notificacaoService.erro('Erro ao atualizar produto!');
           }
         });
@@ -109,7 +119,7 @@ export class Produtos implements OnInit{
           this.carregarProdutos();
           this.notificacaoService.sucesso('Produto excluído com sucesso!');
         },
-        error: (err) => {
+        error: () => {
           this.notificacaoService.erro('Erro ao deletar produto!');
         }
       });
@@ -128,10 +138,25 @@ export class Produtos implements OnInit{
         next: (dados) => {
           this.produtos.set(dados);
         },
-        error: (err) => {
+        error: () => {
           this.notificacaoService.erro('Erro ao listar produtos!');
         }
       })
+    }
+  }
+
+  filtrarPorCategoria() {
+    if (this.categoriaSelecionada) {
+      this.produtoService.listarPorCategoria(this.categoriaSelecionada).subscribe({
+        next: (dados) => {
+          this.produtos.set(dados);
+        },
+        error: () => {
+          this.notificacaoService.erro('Erro ao filtrar por categoria');
+        }
+      });
+    } else {
+      this.carregarProdutos();
     }
   }
 
