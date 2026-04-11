@@ -33,6 +33,10 @@
     <mat-toolbar class="toolbar">
       <span>Painel Administrativo</span>
       <span class="spacer"></span>
+      <span class="usuario-logado">
+        <mat-icon>account_circle</mat-icon>
+        {{ usuarioLogado() }}
+      </span>
       <button mat-icon-button (click)="logout()">
         <mat-icon>logout</mat-icon>
       </button>

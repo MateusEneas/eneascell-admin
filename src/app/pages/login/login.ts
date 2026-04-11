@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../core/services/auth';
 import { Router } from '@angular/router';
+import { AuthStateService } from '../../core/services/auth-state';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ import { Router } from '@angular/router';
 export class Login {
 
   private authService = inject(AuthService);
-  private router = inject(Router)
+  private router = inject(Router);
+  private authStateService = inject(AuthStateService);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -40,6 +42,7 @@ export class Login {
     .subscribe({
       next: (token) => {
         localStorage.setItem('token', token);
+        this.authStateService.carregarUsuario();
         this.router.navigate(['/produtos']);
       },
       error: () => {

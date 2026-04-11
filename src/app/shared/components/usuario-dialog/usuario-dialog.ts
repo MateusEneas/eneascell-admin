@@ -58,7 +58,14 @@ export class UsuarioDialog implements OnInit{
       this.form.markAllAsTouched();
       return;
     }
-    this.dialogRef.close(this.form.value);
+
+    const valor = {...this.form.value};
+
+    if (!valor.senha) {
+      delete valor.senha;
+    }
+
+    this.dialogRef.close(valor);
   }
 
   cancelar() {
